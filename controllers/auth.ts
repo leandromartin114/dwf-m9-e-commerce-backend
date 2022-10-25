@@ -12,18 +12,16 @@ const random = gen.create();
 export async function findAuth(email: string) {
 	const auth = await Auth.findByEmail(email);
 	if (auth) {
-		console.log("User found");
 		return auth;
 	} else {
-		console.log("The user does not exist");
 		return null;
 	}
 }
 export async function createAuth(data) {
-	const auth = await Auth.findByEmail(data.email);
+	const auth = await findAuth(data.email);
 	if (auth) {
 		console.log("The user already exists");
-		return auth;
+		return false;
 	} else {
 		const newUser = await User.createNewUser({
 			email: data.email,
@@ -43,27 +41,28 @@ export async function createAuth(data) {
 
 export async function sendCode(email: string) {
 	const auth = await findAuth(email);
-	if (!auth) {
-		console.error("The user does not exist");
-		return null;
+	if (auth) {
+		const code = random.intBetween(10000, 99999);
+		const now = new Date();
+		const tenMinutesExpDate = addMinutes(now, 10);
+		auth.data.code = code;
+		auth.data.expires = tenMinutesExpDate;
+		await auth.push();
+		const msg = {
+			to: email,
+			from: "leandrom.roldan@gmail.com",
+			subject: "Código de validación",
+			html: `<h1>${code}</h1>
+			<p>Con este código podés loguearte. Recordá que el mismo es válido durante 10 minutos</p>
+			`,
+		};
+		await sgMail.send(msg);
+		console.log("Email sent to " + email);
+		return code;
+	} else {
+		console.error("The user doesn't exist");
+		return false;
 	}
-	const code = random.intBetween(10000, 99999);
-	const now = new Date();
-	const tenMinutesExpDate = addMinutes(now, 10);
-	auth.data.code = code;
-	auth.data.expires = tenMinutesExpDate;
-	await auth.push();
-	const msg = {
-		to: email,
-		from: "leandrom.roldan@gmail.com",
-		subject: "Código de validación",
-		html: `<h1>${code}</h1>
-		<p>Con este código podés loguearte. Recordá que el mismo es válido durante 10 minutos</p>
-		`,
-	};
-	await sgMail.send(msg);
-	console.log("Email sent to " + email);
-	return code;
 }
 
 export async function sendToken(email: string, code: number) {
@@ -75,12 +74,13 @@ export async function sendToken(email: string, code: number) {
 	if (expired) {
 		console.error("Expired code");
 		return expired;
+	} else {
+		const token = generateToken({ userId: auth.data.userId });
+		const now = new Date();
+		auth.data.expires = now;
+		auth.push();
+		return token;
 	}
-	const token = generateToken({ userId: auth.data.userId });
-	const now = new Date();
-	auth.data.expires = now;
-	auth.push();
-	return token;
 }
 
 // export async function findOrCreateAuth(data) {

@@ -7,8 +7,14 @@ module.exports = methods({
 	async post(req: NextApiRequest, res: NextApiResponse) {
 		try {
 			const email = emailCleaner(req.body.email);
-			await sendCode(email);
-			return res.status(200).send({ message: "the code was sent to " + email });
+			const code = await sendCode(email);
+			if (code) {
+				return res
+					.status(200)
+					.send({ message: "the code was sent to " + email });
+			} else {
+				return res.status(400).send({ message: "the user doesn't exist" });
+			}
 		} catch (error) {
 			return res.status(400).send({ message: "error: " + error });
 		}

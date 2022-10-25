@@ -18,7 +18,7 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
 	try {
 		const auth = await createAuth(req.body);
 		if (!auth) {
-			return res.status(400).send({ message: "Auth failed" });
+			return res.status(400).send({ message: "The user already exists" });
 		} else {
 			await sendCode(auth.data.email);
 			return res
