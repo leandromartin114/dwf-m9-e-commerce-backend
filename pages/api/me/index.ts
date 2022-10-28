@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import method from "micro-method-router";
 import { authMiddleware } from "lib/middlewares";
-import { User } from "models/user";
 import { getUserData, updateUser } from "controllers/user";
 
 async function getHandler(req: NextApiRequest, res: NextApiResponse, token) {

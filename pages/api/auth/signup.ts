@@ -2,13 +2,13 @@ import method from "micro-method-router";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createAuth, sendCode } from "controllers/auth";
 import * as yup from "yup";
-import { schemaMiddleware } from "lib/middlewares";
+import { bodySchemaMiddleware } from "lib/middlewares";
 
 let userSchema = yup
 	.object()
 	.shape({
 		fullName: yup.string().required(),
-		email: yup.string().email(),
+		email: yup.string().email().required(),
 		address: yup.string().required(),
 	})
 	.noUnknown(true)
@@ -34,4 +34,4 @@ const handler = method({
 	post: postHandler,
 });
 
-export default schemaMiddleware(userSchema, handler);
+export default bodySchemaMiddleware(userSchema, handler);

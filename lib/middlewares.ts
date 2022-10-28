@@ -18,15 +18,33 @@ export function authMiddleware(callback) {
 	};
 }
 
-export function schemaMiddleware(shema: yup.AnyObjectSchema, callback) {
+export function bodySchemaMiddleware(schema: yup.AnyObjectSchema, callback) {
 	return async function (req: NextApiRequest, res: NextApiResponse) {
 		try {
-			const validateOK = await shema.validate(req.body);
+			const validateOK = await schema.validate(req.body);
 			if (validateOK) {
 				callback(req, res);
 			}
 		} catch (error) {
 			res.status(422).send({ field: "body", message: error });
+		}
+	};
+}
+
+export function queryAndBodyMiddleware(
+	querySch: yup.StringSchema,
+	bodySch: yup.AnyObjectSchema,
+	callback
+) {
+	return async function (req: NextApiRequest, res: NextApiResponse, token) {
+		try {
+			const validateQueryOK = await querySch.validate(req.query.data);
+			const validateBodyOK = await bodySch.validate(req.body);
+			if (validateQueryOK && validateBodyOK) {
+				callback(req, res, token);
+			}
+		} catch (error) {
+			res.status(422).send({ field: "query", message: error });
 		}
 	};
 }
