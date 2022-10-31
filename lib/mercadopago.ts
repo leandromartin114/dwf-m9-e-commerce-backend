@@ -9,17 +9,9 @@ export async function getMerchantOrder(id) {
 	return res.body;
 }
 
-export async function createPreference(productId, ref, data) {
+export async function createPreference(ref, data) {
 	const preference = {
-		items: [
-			{
-				productId: productId,
-				title: data.title,
-				quantity: data.quantity,
-				currency_id: "ARS",
-				unit_price: data.unit_price,
-			},
-		],
+		items: data,
 		external_reference: ref,
 		notification_url:
 			"https://dwf-m9-pagos-pi.vercel.app/api/webhooks/mercadopago",

@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { authMiddleware } from "lib/middlewares";
 import { updateUser } from "controllers/user";
 import * as yup from "yup";
-import { queryAndBodyMiddleware } from "lib/middlewares";
+import { queryAndBodyMid } from "lib/middlewares";
 
 let querySchema = yup
 	.string()
@@ -33,7 +33,7 @@ async function patchOneDataHandler(
 	}
 }
 
-const patchHandlerWithValidation = queryAndBodyMiddleware(
+const patchHandlerWithValidation = queryAndBodyMid(
 	querySchema,
 	bodySchema,
 	patchOneDataHandler

@@ -1,32 +1,41 @@
-import { User } from "lib/models/user";
-import { Order } from "lib/models/order";
+import { User } from "models/user";
+import { Order } from "models/order";
 import { createPreference, getMerchantOrder } from "lib/mercadopago";
 import { sgMail } from "lib/sendgrid";
+import * as _ from "lodash";
 
 export async function generateOrderAndPreference(
 	userId: string,
-	productId: string,
-	data
+	ids: any,
+	data: [any]
 ) {
 	const user = new User(userId);
 	await user.pull();
+	let items;
+	if (data.length == 1) {
+		items = [
+			{
+				productId: ids,
+				...data[0],
+			},
+		];
+	} else {
+		items = _.zipWith(data, ids, (d, i) => {
+			return {
+				productId: i,
+				...d,
+			};
+		});
+	}
 	const orderData = {
 		userId: userId,
 		email: user.data.email,
-		items: [
-			{
-				productId: productId,
-				title: data.title,
-				quantity: data.quantity,
-				currency_id: "ARS",
-				unit_price: data.unit_price,
-			},
-		],
+		items: items,
 		status: "pending",
 		merchant_order: "",
 	};
 	const newOrder = await Order.createNewOrder(orderData);
-	const newPreference = await createPreference(productId, newOrder.id, data);
+	const newPreference = await createPreference(newOrder.id, items);
 	return newPreference;
 }
 
@@ -50,4 +59,16 @@ export async function getAndUpdateOrder(data) {
 		await sgMail.send(msg);
 		return order;
 	}
+}
+
+export async function getOrdersByUserId(userId: string) {
+	const result = await Order.findUserOrders(userId);
+	return result.map((o) => {
+		return o.data();
+	});
+}
+
+export async function getOrder(orderId: string) {
+	const order = await Order.findOrderById(orderId);
+	return order;
 }

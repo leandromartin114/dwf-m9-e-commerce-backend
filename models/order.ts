@@ -22,4 +22,13 @@ export class Order {
 		newOrder.data = data;
 		return newOrder;
 	}
+	static async findUserOrders(userId) {
+		const snap = await collection.where("userId", "==", userId).get();
+		return snap.docs;
+	}
+	static async findOrderById(orderId) {
+		const orderSnap = new Order(orderId);
+		await orderSnap.pull();
+		return orderSnap.data;
+	}
 }

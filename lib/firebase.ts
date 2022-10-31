@@ -7,8 +7,5 @@ if (admin.apps.length === 0) {
 		credential: admin.credential.cert(serviceAccount),
 	});
 }
-// admin.initializeApp({
-// 	credential: admin.credential.cert(serviceAccount),
-// });
 
 export const firestore = admin.firestore();

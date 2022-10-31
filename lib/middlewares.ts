@@ -31,20 +31,27 @@ export function bodySchemaMiddleware(schema: yup.AnyObjectSchema, callback) {
 	};
 }
 
-export function queryAndBodyMiddleware(
-	querySch: yup.StringSchema,
-	bodySch: yup.AnyObjectSchema,
+export function queryAndBodyMid(
+	querySch: any,
+	bodySch: yup.AnySchema,
 	callback
 ) {
 	return async function (req: NextApiRequest, res: NextApiResponse, token) {
 		try {
-			const validateQueryOK = await querySch.validate(req.query.data);
+			let query;
+			if (req.query.data) {
+				query = req.query.data;
+			}
+			if (req.query.productId) {
+				query = req.query.productId;
+			}
+			const validateQueryOK = await querySch.validate(query);
 			const validateBodyOK = await bodySch.validate(req.body);
 			if (validateQueryOK && validateBodyOK) {
 				callback(req, res, token);
 			}
 		} catch (error) {
-			res.status(422).send({ field: "query", message: error });
+			res.status(422).send({ field: "query or body", message: error });
 		}
 	};
 }
