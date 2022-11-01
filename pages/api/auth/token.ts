@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { sendToken } from "controllers/auth";
 import { emailCleaner } from "lib/email-cleaner";
 
+//Generates the token if the email and code match
 module.exports = methods({
 	async post(req: NextApiRequest, res: NextApiResponse) {
 		try {

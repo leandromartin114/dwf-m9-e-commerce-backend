@@ -2,20 +2,10 @@ import method from "micro-method-router";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { authMiddleware } from "lib/middlewares";
 import { updateUser } from "controllers/user";
-import * as yup from "yup";
 import { queryAndBodyMid } from "lib/middlewares";
+import { userDataQuerySchema, userDataBodySchema } from "lib/schemas";
 
-let querySchema = yup
-	.string()
-	.matches(/(email|fullName|address)/, "It's not a valid parameter");
-let bodySchema = yup
-	.object()
-	.shape({
-		content: yup.string().required(),
-	})
-	.noUnknown(true)
-	.strict();
-
+//Updates a specific data indicated in the query params
 async function patchOneDataHandler(
 	req: NextApiRequest,
 	res: NextApiResponse,
@@ -34,8 +24,8 @@ async function patchOneDataHandler(
 }
 
 const patchHandlerWithValidation = queryAndBodyMid(
-	querySchema,
-	bodySchema,
+	userDataQuerySchema,
+	userDataBodySchema,
 	patchOneDataHandler
 );
 

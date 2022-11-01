@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { sendCode } from "controllers/auth";
 import { emailCleaner } from "lib/email-cleaner";
 
+//Searches user by email and if it does exist generates a number code and sends it by email
 module.exports = methods({
 	async post(req: NextApiRequest, res: NextApiResponse) {
 		try {

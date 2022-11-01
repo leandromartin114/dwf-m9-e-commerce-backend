@@ -1,7 +1,8 @@
 import methods from "micro-method-router";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { searchProducts } from "controllers/products";
+import { searchProducts } from "controllers/product";
 
+//Gets the products searching by query
 module.exports = methods({
 	async get(req: NextApiRequest, res: NextApiResponse) {
 		try {

@@ -1,19 +1,10 @@
 import method from "micro-method-router";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createAuth, sendCode } from "controllers/auth";
-import * as yup from "yup";
 import { bodySchemaMiddleware } from "lib/middlewares";
+import { newUserBodySchema } from "lib/schemas";
 
-let userSchema = yup
-	.object()
-	.shape({
-		fullName: yup.string().required(),
-		email: yup.string().email().required(),
-		address: yup.string().required(),
-	})
-	.noUnknown(true)
-	.strict();
-
+//Searches user and if it does not exist, creates a new one
 async function postHandler(req: NextApiRequest, res: NextApiResponse) {
 	try {
 		const auth = await createAuth(req.body);
@@ -34,4 +25,4 @@ const handler = method({
 	post: postHandler,
 });
 
-export default bodySchemaMiddleware(userSchema, handler);
+export default bodySchemaMiddleware(newUserBodySchema, handler);

@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { getOrdersByUserId } from "controllers/order";
 import { authMiddleware } from "lib/middlewares";
 
+//Gets user's orders
 async function getHandler(req: NextApiRequest, res: NextApiResponse, token) {
 	try {
 		const userOrders = await getOrdersByUserId(token.userId);

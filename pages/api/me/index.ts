@@ -3,6 +3,7 @@ import method from "micro-method-router";
 import { authMiddleware } from "lib/middlewares";
 import { getUserData, updateUser } from "controllers/user";
 
+//Gets user info
 async function getHandler(req: NextApiRequest, res: NextApiResponse, token) {
 	try {
 		const userData = await getUserData(token.userId);
@@ -15,6 +16,7 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse, token) {
 		res.status(400).send({ error: error });
 	}
 }
+//Updates user info
 async function patchHandler(req: NextApiRequest, res: NextApiResponse, token) {
 	try {
 		const userUpdated = await updateUser(token.userId, req.body);

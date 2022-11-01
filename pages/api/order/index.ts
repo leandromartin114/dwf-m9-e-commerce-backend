@@ -3,29 +3,10 @@ import method from "micro-method-router";
 import { authMiddleware } from "lib/middlewares";
 import { generateOrderAndPreference } from "controllers/order";
 import { getOrder } from "controllers/order";
-import * as yup from "yup";
 import { queryAndBodyMid } from "lib/middlewares";
+import { orderQuerySchema, orderBodySchema } from "lib/schemas";
 
-let querySchema = yup.mixed();
-
-let bodySchema = yup
-	.array()
-	.of(
-		yup
-			.object()
-			.shape({
-				title: yup.string().required(),
-				quantity: yup.string().required(),
-				currency_id: yup.string().required(),
-				unit_price: yup.number().required(),
-				color: yup.string().optional(),
-				materials: yup.string().optional(),
-			})
-			.noUnknown(true)
-			.strict()
-	)
-	.strict();
-
+//Gets order info by id
 async function getHandler(req: NextApiRequest, res: NextApiResponse, token) {
 	try {
 		if (!token.userId) {
@@ -38,6 +19,7 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse, token) {
 	}
 }
 
+//Generates a new order and preference
 async function postHandler(req: NextApiRequest, res: NextApiResponse, token) {
 	try {
 		if (!token.userId) {
@@ -55,8 +37,8 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse, token) {
 }
 
 const postHandlerWithValidation = queryAndBodyMid(
-	querySchema,
-	bodySchema,
+	orderQuerySchema,
+	orderBodySchema,
 	postHandler
 );
 
