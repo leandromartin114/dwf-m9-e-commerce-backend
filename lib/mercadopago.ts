@@ -13,8 +13,7 @@ export async function createPreference(ref, data) {
 	const preference = {
 		items: data,
 		external_reference: ref,
-		notification_url:
-			"https://dwf-m9-pagos-pi.vercel.app/api/webhooks/mercadopago",
+		notification_url: "https://myfreemarket.vercel.app/api/ipn/mercadopago",
 	};
 	const newPreference = await mercadopago.preferences.create(preference);
 	return newPreference;
