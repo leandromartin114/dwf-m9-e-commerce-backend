@@ -2,9 +2,9 @@
 <p>API REST builded using NodeJS and NextJS through a MVC architecture</p>
 <p>It allow a user to login/signup using a passwordless system. Search products in a catalog and process the payments with Mercado Pago</p>
 <h2>Postman Documentation</h2>
-<a>https://documenter.getpostman.com/view/20242333/2s8YRpEVcb</a>
+<link>https://documenter.getpostman.com/view/20242333/2s8YRpEVcb</link>
 <h2>API</h2>
-<a>https://myfreemarket.vercel.app</a>
+<link>https://myfreemarket.vercel.app</link>
 <h2>Tech Stack</h2>
 <ul>
 <li>Typescript</li>
