@@ -11,9 +11,10 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse, token) {
 	try {
 		if (!token.userId) {
 			res.status(401).send({ message: "Unauthorized" });
+		} else {
+			const order = await getOrder(req.query.orderId as string);
+			res.status(200).send(order);
 		}
-		const order = await getOrder(req.query.orderId as string);
-		res.status(200).send(order);
 	} catch (error) {
 		res.status(400).send({ error: error });
 	}
@@ -24,13 +25,14 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse, token) {
 	try {
 		if (!token.userId) {
 			res.status(401).send({ message: "Unauthorized" });
+		} else {
+			const response = await generateOrderAndPreference(
+				token.userId,
+				req.query.productId,
+				req.body
+			);
+			res.status(200).send(response.body.init_point);
 		}
-		const response = await generateOrderAndPreference(
-			token.userId,
-			req.query.productId,
-			req.body
-		);
-		res.status(200).send(response.body.init_point);
 	} catch (error) {
 		res.status(400).send({ error: error });
 	}

@@ -11,11 +11,11 @@ module.exports = methods({
 			const token = await sendToken(email, req.body.code);
 			if (!token) {
 				res.status(401).send({ message: "Wrong email or code" });
-			}
-			if (token === true) {
+			} else if (token === true) {
 				res.status(401).send({ message: "Expired code" });
+			} else {
+				res.status(200).send({ token });
 			}
-			res.status(200).send({ token });
 		} catch (error) {
 			res.status(400).send({ error: error });
 		}
