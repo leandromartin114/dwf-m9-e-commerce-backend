@@ -17,6 +17,7 @@ export async function findAuth(email: string) {
 		return null;
 	}
 }
+
 export async function createAuth(data) {
 	const auth = await findAuth(data.email);
 	if (auth) {
@@ -82,25 +83,3 @@ export async function sendToken(email: string, code: number) {
 		return token;
 	}
 }
-
-// export async function findOrCreateAuth(data) {
-// 	const auth = await Auth.findByEmail(data.email);
-// 	if (auth) {
-// 		console.log("Auth encontrado");
-// 		return auth;
-// 	} else {
-// 		const newUser = await User.createNewUser({
-// 			email: data.email,
-// 			fullName: data.fullName,
-// 			address: data.address,
-// 		});
-// 		const newAuth = await Auth.createNewAuth({
-// 			email: data.email,
-// 			userId: newUser.id,
-// 			code: "",
-// 			expires: new Date(),
-// 		});
-// 		console.log("new Auth creado");
-// 		return newAuth;
-// 	}
-// }

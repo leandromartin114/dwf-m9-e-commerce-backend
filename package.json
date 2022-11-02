@@ -11,11 +11,28 @@
 		"start": "next",
 		"test": "ava"
 	},
+	"ava": {
+		"nodeArguments": [
+			"--loader=@esbuild-kit/esm-loader",
+			"--experimental-specifier-resolution=node"
+		],
+		"environmentVariables": {
+			"TESTING": "true",
+			"JWT_SECRET": "84g4v949vnb4496"
+		},
+		"extensions": {
+			"ts": "module"
+		}
+	},
+	"type": "module",
 	"dependencies": {
+		"@esbuild-kit/esm-loader": "^2.5.0",
 		"@sendgrid/mail": "^7.7.0",
 		"airtable": "^0.11.5",
 		"algoliasearch": "^4.14.2",
+		"ava": "^5.0.1",
 		"date-fns": "^2.29.3",
+		"esbuild-node-loader": "^0.8.0",
 		"firebase-admin": "^11.1.0",
 		"jsonwebtoken": "^8.5.1",
 		"lodash": "^4.17.21",
