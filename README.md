@@ -1,6 +1,6 @@
 <h1>E-Commerce Backend</h1>
-<p>API REST builded using NodeJS and NextJS through a MVC architecture</p>
-<p>It allow a user to login/signup using a passwordless system. Search products in a catalog and process the payments with Mercado Pago</p>
+<p>API REST built using NodeJS and NextJS through an MVC architecture</p>
+<p>It allows a user to login/signup using a passwordless system. Search products in a catalog and process the payments with Mercado Pago</p>
 <h2>Postman Documentation</h2>
 <link>https://documenter.getpostman.com/view/20242333/2s8YRpEVcb</link>
 <h2>API</h2>
