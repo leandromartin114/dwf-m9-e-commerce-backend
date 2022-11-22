@@ -20,6 +20,23 @@ export async function searchProducts(req) {
 	return response;
 }
 
+export async function getAllProducts(req) {
+	const { limit, offset } = getOffsetAndLimitFromReq(req, 20, 10);
+	const result = await productsIndex.search("", {
+		offset: offset,
+		length: limit,
+	});
+	const response = {
+		results: result.hits,
+		pagination: {
+			offset: offset,
+			limit: limit,
+			total: result.nbHits,
+		},
+	};
+	return response;
+}
+
 export async function getProductData(id) {
 	const result = await productsIndex.getObject(id);
 	if (result) {
