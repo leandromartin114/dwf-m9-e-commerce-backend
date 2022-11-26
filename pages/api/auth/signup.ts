@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { createAuth, sendCode } from "controllers/auth";
 import { bodySchemaMiddleware } from "lib/middlewares";
 import { newUserBodySchema } from "lib/schemas";
+import { CORSMiddleware } from "lib/middlewares";
 
 //Searches user and if it does not exist, creates a new one
 async function postHandler(req: NextApiRequest, res: NextApiResponse) {
@@ -21,8 +22,10 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
 	}
 }
 
+const handlerWithCors = CORSMiddleware(postHandler);
+
 const handler = method({
-	post: postHandler,
+	post: handlerWithCors,
 });
 
 export default bodySchemaMiddleware(newUserBodySchema, handler);

@@ -4,6 +4,7 @@ import { authMiddleware } from "lib/middlewares";
 import { updateUser } from "controllers/user";
 import { queryAndBodyMid } from "lib/middlewares";
 import { userDataQuerySchema, userDataBodySchema } from "lib/schemas";
+import { CORSMiddleware } from "lib/middlewares";
 
 //Updates a specific data indicated in the query params
 async function patchOneDataHandler(
@@ -29,8 +30,10 @@ const patchHandlerWithValidation = queryAndBodyMid(
 	patchOneDataHandler
 );
 
+const handlerValidationAndCors = CORSMiddleware(patchHandlerWithValidation);
+
 const handler = method({
-	patch: patchHandlerWithValidation,
+	patch: handlerValidationAndCors,
 });
 
 export default authMiddleware(handler);

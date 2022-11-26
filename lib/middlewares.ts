@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import type { NextRequest } from "next/server";
 import parseBearerToken from "parse-bearer-token";
 import { decodeToken } from "./jwt";
 import * as yup from "yup";
+import NextCors from "nextjs-cors";
 
 export function authMiddleware(callback) {
 	return function (req: NextApiRequest, res: NextApiResponse) {
@@ -57,23 +57,19 @@ export function queryAndBodyMid(
 	};
 }
 
-export function middleware(req: NextRequest) {
-	if (req.method == "OPTIONS") {
-		return new Response(null, {
-			status: 204,
-			headers: {
-				"Access-Control-Allow-Credentials": "true",
-				"Access-Control-Allow-Origin": "*",
-				"Access-Control-Allow-Methods": "GET,OPTIONS,PATCH,DELETE,POST,PUT",
-				"Access-Control-Allow-Headers":
-					req.headers.get("Access-Control-Request-Headers") || "",
-				Vary: "Access-Control-Request-Headers",
-				"Content-Length": "0",
-			},
+export function CORSMiddleware(callback) {
+	return async function (req: NextApiRequest, res: NextApiResponse) {
+		// Run the cors middleware
+		// nextjs-cors uses the cors package, so we invite you to check the documentation https://github.com/expressjs/cors
+		await NextCors(req, res, {
+			// Options
+			methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+			origin: "*",
+			optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 		});
-	}
-}
 
-export const config = {
-	matcher: ["/api/:path*"],
-};
+		// Rest of the API logic
+		callback(req, res);
+		//res.json({ message: "Hello NextJs Cors!" });
+	};
+}

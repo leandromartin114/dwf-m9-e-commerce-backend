@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import method from "micro-method-router";
 import { authMiddleware } from "lib/middlewares";
 import { getUserData, updateUser } from "controllers/user";
+import { CORSMiddleware } from "lib/middlewares";
 
 //Gets user info
 async function getHandler(req: NextApiRequest, res: NextApiResponse, token) {
@@ -26,9 +27,12 @@ async function patchHandler(req: NextApiRequest, res: NextApiResponse, token) {
 	}
 }
 
+const getHandlerCors = CORSMiddleware(getHandler);
+const patchHandlerCors = CORSMiddleware(patchHandler);
+
 const handler = method({
-	get: getHandler,
-	patch: patchHandler,
+	get: getHandlerCors,
+	patch: patchHandlerCors,
 });
 
 export default authMiddleware(handler);

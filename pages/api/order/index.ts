@@ -5,6 +5,7 @@ import { generateOrderAndPreference } from "controllers/order";
 import { getOrder } from "controllers/order";
 import { queryAndBodyMid } from "lib/middlewares";
 import { orderQuerySchema, orderBodySchema } from "lib/schemas";
+import { CORSMiddleware } from "lib/middlewares";
 
 //Gets order info by id
 async function getHandler(req: NextApiRequest, res: NextApiResponse, token) {
@@ -44,9 +45,12 @@ const postHandlerWithValidation = queryAndBodyMid(
 	postHandler
 );
 
+const getHandlerWithCors = CORSMiddleware(getHandler);
+const postHandlerValidationCors = CORSMiddleware(postHandlerWithValidation);
+
 const handler = method({
-	post: postHandlerWithValidation,
-	get: getHandler,
+	post: postHandlerValidationCors,
+	get: getHandlerWithCors,
 });
 
 export default authMiddleware(handler);

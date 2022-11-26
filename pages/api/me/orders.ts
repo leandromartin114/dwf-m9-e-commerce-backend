@@ -2,6 +2,7 @@ import method from "micro-method-router";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getOrdersByUserId } from "controllers/order";
 import { authMiddleware } from "lib/middlewares";
+import { CORSMiddleware } from "lib/middlewares";
 
 //Gets user's orders
 async function getHandler(req: NextApiRequest, res: NextApiResponse, token) {
@@ -17,8 +18,10 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse, token) {
 	}
 }
 
+const handlerWithCors = CORSMiddleware(getHandler);
+
 const handler = method({
-	get: getHandler,
+	get: handlerWithCors,
 });
 
 export default authMiddleware(handler);

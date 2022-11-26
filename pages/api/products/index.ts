@@ -1,6 +1,7 @@
 import method from "micro-method-router";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getAllProducts } from "controllers/product";
+import { CORSMiddleware } from "lib/middlewares";
 
 //Gets all the products
 async function getHandler(req: NextApiRequest, res: NextApiResponse) {
@@ -11,8 +12,11 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse) {
 		res.status(400).send({ error: error });
 	}
 }
+
+const getHandlerWithCors = CORSMiddleware(getHandler);
+
 const handler = method({
-	get: getHandler,
+	get: getHandlerWithCors,
 });
 
 export default handler;
