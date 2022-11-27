@@ -15,7 +15,7 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 const handler = method({
-	post: getHandler,
+	get: getHandler,
 });
 
 export default CORSMiddleware(handler);
