@@ -27,12 +27,12 @@ async function patchHandler(req: NextApiRequest, res: NextApiResponse, token) {
 	}
 }
 
-const getHandlerCors = CORSMiddleware(getHandler);
-const patchHandlerCors = CORSMiddleware(patchHandler);
+const getHandlerWithAuth = authMiddleware(getHandler);
+const patchHandlerWithAuth = authMiddleware(patchHandler);
 
 const handler = method({
-	get: getHandlerCors,
-	patch: patchHandlerCors,
+	get: getHandlerWithAuth,
+	patch: patchHandlerWithAuth,
 });
 
-export default authMiddleware(handler);
+export default CORSMiddleware(handler);

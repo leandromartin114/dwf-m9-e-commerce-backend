@@ -30,10 +30,10 @@ const patchHandlerWithValidation = queryAndBodyMid(
 	patchOneDataHandler
 );
 
-const handlerValidationAndCors = CORSMiddleware(patchHandlerWithValidation);
+const handlerWithAuth = authMiddleware(patchHandlerWithValidation);
 
 const handler = method({
-	patch: handlerValidationAndCors,
+	patch: handlerWithAuth,
 });
 
-export default authMiddleware(handler);
+export default CORSMiddleware(handler);

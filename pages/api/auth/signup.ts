@@ -22,10 +22,10 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
 	}
 }
 
-const handlerWithCors = CORSMiddleware(postHandler);
+const validateHandler = bodySchemaMiddleware(newUserBodySchema, postHandler);
 
 const handler = method({
-	post: handlerWithCors,
+	post: validateHandler,
 });
 
-export default bodySchemaMiddleware(newUserBodySchema, handler);
+export default CORSMiddleware(handler);

@@ -18,10 +18,10 @@ async function getHandler(req: NextApiRequest, res: NextApiResponse, token) {
 	}
 }
 
-const handlerWithCors = CORSMiddleware(getHandler);
+const handlerWithAuth = authMiddleware(getHandler);
 
 const handler = method({
-	get: handlerWithCors,
+	get: handlerWithAuth,
 });
 
-export default authMiddleware(handler);
+export default CORSMiddleware(handler);

@@ -45,12 +45,12 @@ const postHandlerWithValidation = queryAndBodyMid(
 	postHandler
 );
 
-const getHandlerWithCors = CORSMiddleware(getHandler);
-const postHandlerValidationCors = CORSMiddleware(postHandlerWithValidation);
+const getHandlerWithAuth = authMiddleware(getHandler);
+const postHandlerWithAuth = authMiddleware(postHandlerWithValidation);
 
 const handler = method({
-	post: postHandlerValidationCors,
-	get: getHandlerWithCors,
+	post: postHandlerWithAuth,
+	get: getHandlerWithAuth,
 });
 
-export default authMiddleware(handler);
+export default CORSMiddleware(handler);
