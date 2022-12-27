@@ -57,6 +57,7 @@ export function queryAndBodyMid(
 	};
 }
 
+//CORS mid
 export function CORSMiddleware(callback) {
 	return async function (req: NextApiRequest, res: NextApiResponse) {
 		// Run the cors middleware
