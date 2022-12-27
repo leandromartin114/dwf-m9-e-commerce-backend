@@ -3,6 +3,7 @@ import parseBearerToken from "parse-bearer-token";
 import { decodeToken } from "./jwt";
 import * as yup from "yup";
 import NextCors from "nextjs-cors";
+import Cors from "cors";
 
 export function authMiddleware(callback) {
 	return function (req: NextApiRequest, res: NextApiResponse) {
@@ -57,7 +58,7 @@ export function queryAndBodyMid(
 	};
 }
 
-//CORS mid
+//CORS mid 1
 export function CORSMiddleware(callback) {
 	return async function (req: NextApiRequest, res: NextApiResponse) {
 		// Run the cors middleware
@@ -73,4 +74,19 @@ export function CORSMiddleware(callback) {
 		callback(req, res);
 		//res.json({ message: "Hello NextJs Cors!" });
 	};
+}
+
+//CORS mid 2
+const cors = Cors({
+	methods: ["GET", "POST", "PATCH", "OPTIONS"],
+});
+
+export function CORS2Middleware(req, res, cb) {
+	return new Promise((resolve, reject) => {
+		cors(req, res, (result) => {
+			if (result instanceof Error) return reject(result);
+			cb(req, res);
+			return resolve(result);
+		});
+	});
 }
