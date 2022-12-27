@@ -43,7 +43,12 @@ async function handler(req, res) {
 	await runMiddleware(req, res, cors);
 
 	// Rest of the API logic
-	res.json({ message: "Hello Everyone!" });
+	try {
+		const productData = await getProductData(req.query.productId);
+		res.status(200).send(productData);
+	} catch (error) {
+		res.status(400).send({ error: error });
+	}
 }
 
 export default handler;
