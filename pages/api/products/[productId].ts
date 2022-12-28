@@ -18,8 +18,8 @@ const handler = method({
 	get: getHandler,
 });
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
-	await CORS2Middleware(req, res, handler);
-};
+// export default async (req: NextApiRequest, res: NextApiResponse) => {
+// 	await CORS2Middleware(req, res, handler);
+// };
 
-// export default CORS2Middleware(handler);
+export default CORS2Middleware(handler);

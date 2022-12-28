@@ -81,12 +81,18 @@ const cors = Cors({
 	methods: ["GET", "POST", "PATCH", "OPTIONS"],
 });
 
-export function CORS2Middleware(req, res, cb) {
-	return new Promise((resolve, reject) => {
-		cors(req, res, (result) => {
-			if (result instanceof Error) return reject(result);
-			cb(req, res);
-			return resolve(result);
-		});
-	});
+// export function CORS2Middleware(req, res, cb) {
+// 	return new Promise((resolve, reject) => {
+// 		cors(req, res, (result) => {
+// 			if (result instanceof Error) return reject(result);
+// 			cb(req, res);
+// 			return resolve(result);
+// 		});
+// 	});
+// }
+export function CORS2Middleware(cb) {
+	return async function (req: NextApiRequest, res: NextApiResponse) {
+		await cors(req, res);
+		cb(req, res);
+	};
 }
