@@ -22,4 +22,6 @@ const handler = method({
 // 	await CORS2Middleware(req, res, handler);
 // };
 
-export default CORSMiddleware(handler);
+// export default CORSMiddleware(handler);
+
+export default handler;
