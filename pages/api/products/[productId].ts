@@ -1,7 +1,7 @@
 import method from "micro-method-router";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getProductData } from "controllers/product";
-import { CORS2Middleware } from "lib/middlewares";
+import { CORSMiddleware } from "lib/middlewares";
 
 //Gets the product data searching by id
 
@@ -22,4 +22,4 @@ const handler = method({
 // 	await CORS2Middleware(req, res, handler);
 // };
 
-export default CORS2Middleware(handler);
+export default CORSMiddleware(handler);
