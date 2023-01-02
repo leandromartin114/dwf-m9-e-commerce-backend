@@ -32,7 +32,7 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse, token) {
 				req.body
 				// req.query.productId,
 			);
-			res.status(200).send(response.body.init_point);
+			res.status(200).send({ url: response.body.init_point });
 		}
 	} catch (error) {
 		res.status(400).send({ error: error.message });
