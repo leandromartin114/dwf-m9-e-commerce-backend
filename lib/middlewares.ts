@@ -20,12 +20,12 @@ export function authMiddleware(callback) {
 	};
 }
 
-export function bodySchemaMiddleware(schema: yup.AnySchema, callback) {
-	return async function (req: NextApiRequest, res: NextApiResponse) {
+export function bodySchemaMiddleware(bodySchema: yup.AnySchema, callback) {
+	return async function (req: NextApiRequest, res: NextApiResponse, token?) {
 		try {
-			const validateOK = await schema.validate(req.body);
+			const validateOK = await bodySchema.validate(req.body);
 			if (validateOK) {
-				callback(req, res);
+				callback(req, res, token);
 			}
 		} catch (error) {
 			res.status(422).send({ field: "body", message: error });

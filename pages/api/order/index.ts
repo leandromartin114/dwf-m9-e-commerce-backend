@@ -29,20 +29,20 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse, token) {
 		} else {
 			const response = await generateOrderAndPreference(
 				token.userId,
-				// req.query.productId,
 				req.body
+				// req.query.productId,
 			);
 			res.status(200).send(response.body.init_point);
 		}
 	} catch (error) {
-		res.status(400).send({ error: error });
+		res.status(400).send({ error: error.message });
 	}
 }
 
 const postHandlerWithValidation = bodySchemaMiddleware(
-	// orderQuerySchema,
 	orderBodySchema,
 	postHandler
+	// orderQuerySchema,
 );
 
 const getHandlerWithAuth = authMiddleware(getHandler);
