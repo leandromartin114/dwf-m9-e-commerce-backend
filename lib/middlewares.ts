@@ -20,7 +20,7 @@ export function authMiddleware(callback) {
 	};
 }
 
-export function bodySchemaMiddleware(schema: yup.AnyObjectSchema, callback) {
+export function bodySchemaMiddleware(schema: yup.AnySchema, callback) {
 	return async function (req: NextApiRequest, res: NextApiResponse) {
 		try {
 			const validateOK = await schema.validate(req.body);

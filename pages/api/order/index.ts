@@ -3,7 +3,7 @@ import method from "micro-method-router";
 import { authMiddleware } from "lib/middlewares";
 import { generateOrderAndPreference } from "controllers/order";
 import { getOrder } from "controllers/order";
-import { queryAndBodyMid } from "lib/middlewares";
+import { bodySchemaMiddleware } from "lib/middlewares";
 import { orderQuerySchema, orderBodySchema } from "lib/schemas";
 import { CORSMiddleware } from "lib/middlewares";
 
@@ -39,8 +39,8 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse, token) {
 	}
 }
 
-const postHandlerWithValidation = queryAndBodyMid(
-	orderQuerySchema,
+const postHandlerWithValidation = bodySchemaMiddleware(
+	// orderQuerySchema,
 	orderBodySchema,
 	postHandler
 );

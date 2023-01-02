@@ -9,6 +9,7 @@ let orderBodySchema = yup
 			.object()
 			.shape({
 				title: yup.string().required(),
+				objectID: yup.string().required(),
 				quantity: yup.number().required(),
 				currency_id: yup.string().required(),
 				unit_price: yup.number().required(),
