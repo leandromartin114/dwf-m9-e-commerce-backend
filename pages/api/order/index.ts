@@ -29,7 +29,7 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse, token) {
 		} else {
 			const response = await generateOrderAndPreference(
 				token.userId,
-				req.query.productId,
+				// req.query.productId,
 				req.body
 			);
 			res.status(200).send(response.body.init_point);

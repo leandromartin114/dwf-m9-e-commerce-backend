@@ -6,36 +6,36 @@ import * as _ from "lodash";
 
 export async function generateOrderAndPreference(
 	userId: string,
-	ids: any,
+	// ids: any,
 	data: [any]
 ) {
 	const user = new User(userId);
 	await user.pull();
-	let items;
-	if (data.length == 1) {
-		items = [
-			{
-				productId: ids,
-				...data[0],
-			},
-		];
-	} else {
-		items = _.zipWith(data, ids, (d, i) => {
-			return {
-				productId: i,
-				...d,
-			};
-		});
-	}
+	// let items;
+	// if (data.length == 1) {
+	// 	items = [
+	// 		{
+	// 			productId: ids,
+	// 			...data[0],
+	// 		},
+	// 	];
+	// } else {
+	// 	items = _.zipWith(data, ids, (d, i) => {
+	// 		return {
+	// 			productId: i,
+	// 			...d,
+	// 		};
+	// 	});
+	// }
 	const orderData = {
 		userId: userId,
 		email: user.data.email,
-		items: items,
+		items: data,
 		status: "pending",
 		merchant_order: "",
 	};
 	const newOrder = await Order.createNewOrder(orderData);
-	const newPreference = await createPreference(newOrder.id, items);
+	const newPreference = await createPreference(newOrder.id, data);
 	return newPreference;
 }
 
