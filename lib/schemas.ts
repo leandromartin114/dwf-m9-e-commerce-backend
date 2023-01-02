@@ -2,24 +2,25 @@ import * as yup from "yup";
 
 let orderQuerySchema = yup.mixed();
 
-let orderBodySchema = yup
-	.array()
-	.of(
-		yup
-			.object()
-			.shape({
-				title: yup.string().required(),
-				objectID: yup.string().required(),
-				quantity: yup.number().required(),
-				currency_id: yup.string().required(),
-				unit_price: yup.number().required(),
-				color: yup.string().optional(),
-				materials: yup.string().optional(),
-			})
-			.noUnknown(true)
-			.strict()
-	)
-	.strict();
+let orderBodySchema =
+	yup
+		.array()
+		.of(
+			yup
+				.object()
+				.shape({
+					title: yup.string().required(),
+					objectID: yup.string().required(),
+					quantity: yup.number().required(),
+					currency_id: yup.string().required(),
+					unit_price: yup.number().required(),
+					color: yup.string().optional(),
+					materials: yup.string().optional(),
+				})
+				.noUnknown(true)
+				.strict()
+		)
+		.strict() || yup.object().noUnknown(true).strict();
 
 let newUserBodySchema = yup
 	.object()

@@ -7,7 +7,7 @@ import * as _ from "lodash";
 export async function generateOrderAndPreference(
 	userId: string,
 	// ids: any,
-	data: [any]
+	data: any
 ) {
 	const user = new User(userId);
 	await user.pull();
