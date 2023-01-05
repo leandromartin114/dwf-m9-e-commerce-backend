@@ -14,6 +14,11 @@ export async function createPreference(ref, data) {
 		items: data,
 		external_reference: ref,
 		notification_url: "https://myfreemarket.vercel.app/api/ipn/mercadopago",
+		back_urls: {
+			success: process.env.SUCCESS_URL,
+			failure: process.env.FAILURE_URL,
+			pending: process.env.PENDING_URL,
+		},
 	};
 	const newPreference = await mercadopago.preferences.create(preference);
 	return newPreference;
