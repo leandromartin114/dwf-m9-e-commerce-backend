@@ -37,6 +37,23 @@ export async function getAllProducts(req) {
 	return response;
 }
 
+export async function getFeaturedProducts(req) {
+	const { limit, offset } = getOffsetAndLimitFromReq(req, 20, 20);
+	const result = await productsIndex.search("true", {
+		offset: offset,
+		length: limit,
+	});
+	const response = {
+		results: result.hits,
+		pagination: {
+			offset: offset,
+			limit: limit,
+			total: result.nbHits,
+		},
+	};
+	return response;
+}
+
 export async function getProductData(id) {
 	const result = await productsIndex.getObject(id);
 	if (result) {
